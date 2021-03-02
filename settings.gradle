@@ -1,2 +1,5 @@
+include ':mvi-processor'
+include ':mvi-annotations'
+include ':mvi'
 include ':app'
 rootProject.name = "Pokedex"
