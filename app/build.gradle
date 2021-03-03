@@ -57,4 +57,17 @@ dependencies {
     implementation project(path: ':mvi')
     implementation project(path: ':mvi')
 
+    //Retrofit
+    implementation 'com.squareup.retrofit2:retrofit:2.9.0'
+    implementation 'com.squareup.retrofit2:converter-gson:2.3.0'
+    implementation 'com.squareup.okhttp3:logging-interceptor:4.9.0'
+
+    // Koin for Android
+    implementation "org.koin:koin-android:2.1.5"
+
+    // Koin Android ViewModel features
+    implementation "org.koin:koin-androidx-viewmodel:2.1.5"
+
+    //Coil
+    implementation "io.coil-kt:coil:1.1.1"
 }
