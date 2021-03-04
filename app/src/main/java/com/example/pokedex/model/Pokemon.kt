@@ -2,6 +2,7 @@ package com.example.pokedex.model
 
 import android.os.Parcelable
 import kotlinx.android.parcel.Parcelize
+import java.io.Serializable
 
 @Parcelize
 data class Pokemon(
@@ -23,19 +24,17 @@ data class Pokemon(
 //    val sprites: PokemonSprites
 ) : Parcelable
 
-@Parcelize
 data class PokemonResponse(
     val count: Int,
     val next: String?,
     val previous: String?,
-    val results: List<PokemonResult>
-) : Parcelable
+    val results: ArrayList<PokemonResult>
+) : Serializable
 
-@Parcelize
 data class PokemonResult(
     val name: String,
     val url: String
-) : Parcelable
+) :Serializable
 
 //data class Ability(
 //    val id: Int,

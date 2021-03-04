@@ -2,17 +2,17 @@ package com.example.pokedex.mvilist
 
 object ListPokemonReducer {
 
-    fun reduce(currentState: ListPokemonState, results: ListPokemonResults) : ListPokemonState{
-        return when(results){
+    fun reduce(currentState: ListPokemonState, result: ListPokemonResults) : ListPokemonState{
+        return when(result){
             ListPokemonResults.Loanding -> currentState.copy(stateType = StateType.Loanding)
             ListPokemonResults.SessionExpired -> currentState.copy(stateType = StateType.SessionExpired)
             is ListPokemonResults.SuccessListPokemon -> currentState.copy(
-                stateType = StateType.SuccessCep,
-                successList = results.successListPokemon
+                stateType = StateType.SuccessList,
+                successList = result.successListPokemon
             )
             is ListPokemonResults.ErrorListPokemon -> currentState.copy(
-                stateType = StateType.ErrorCep,
-                message = results.message
+                stateType = StateType.ErrorList,
+                message = result.message
             )
         }
     }

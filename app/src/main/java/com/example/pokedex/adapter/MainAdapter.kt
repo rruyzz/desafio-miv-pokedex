@@ -13,6 +13,7 @@ import kotlinx.android.synthetic.main.rv_list.view.*
 
 class MainAdapter(var listener: OnClickPokeListener, var context: MainFragment) : RecyclerView.Adapter<MainAdapter.ListPokeAdapterViewHolder>() {
 
+//    val result : PokemonResponse =
     var list = arrayListOf<PokemonResult>()
     override fun onCreateViewHolder(
         parent: ViewGroup,
@@ -23,6 +24,11 @@ class MainAdapter(var listener: OnClickPokeListener, var context: MainFragment) 
     }
 
     override fun getItemCount() = list.size
+
+    fun addListPoke(list: ArrayList<PokemonResult>){
+        list.addAll(list)
+        notifyDataSetChanged()
+    }
 
     override fun onBindViewHolder(holder: MainAdapter.ListPokeAdapterViewHolder, position: Int) {
         val poke = list[position]
@@ -35,9 +41,11 @@ class MainAdapter(var listener: OnClickPokeListener, var context: MainFragment) 
 
     inner class ListPokeAdapterViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView), View.OnClickListener {
         val namePoke: TextView = itemView.text_view_name_pokemon
+
         init{
             itemView.setOnClickListener(this)
         }
+
         override fun onClick(v: View?) {
             val position = adapterPosition
             if(RecyclerView.NO_POSITION != position)
@@ -45,5 +53,4 @@ class MainAdapter(var listener: OnClickPokeListener, var context: MainFragment) 
 
         }
     }
-
 }

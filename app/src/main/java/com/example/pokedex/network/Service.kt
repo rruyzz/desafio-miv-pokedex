@@ -2,8 +2,10 @@ package com.example.pokedex.network
 
 import com.example.pokedex.model.Pokemon
 import com.example.pokedex.model.PokemonResponse
+import com.google.gson.JsonObject
 import okhttp3.OkHttpClient
 import okhttp3.logging.HttpLoggingInterceptor
+import org.json.JSONObject
 import retrofit2.Response
 import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
@@ -14,14 +16,12 @@ import retrofit2.http.Query
 interface Service {
     @GET("pokemon")
     suspend fun getListPokemonService(
-        @Query("offset") offset: Int,
-        @Query("limit") limit: Int
+        @Query("limit") limit: Int? = 20,
+        @Query("offset") offset: Int? = 0
     ): Response<PokemonResponse>
 
     @GET("pokemon/{id}")
     suspend fun getPokemonService(@Path("id") id:String) : Pokemon
-
-
 }
 
 val logger = HttpLoggingInterceptor().setLevel(HttpLoggingInterceptor.Level.BODY)

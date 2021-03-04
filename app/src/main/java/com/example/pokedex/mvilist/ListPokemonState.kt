@@ -7,13 +7,14 @@ import com.example.mvi_annotations.MVIActions
 import com.example.mvi_annotations.MVIResults
 import com.example.mvi_annotations.MVIState
 import com.example.pokedex.model.PokemonResponse
+import com.example.pokedex.model.PokemonResult
 
 
 @MVIState
 data class ListPokemonState (
     val stateType: StateType? = null,
     val message: String = "",
-    val successList : List<PokemonResponse>? = null
+    val successList : PokemonResponse? = null
 )
 
 @MVIActions
@@ -26,15 +27,15 @@ sealed class ListPokemonResults{
     object Loanding : ListPokemonResults()
     object SessionExpired : ListPokemonResults()
 
-    data class SuccessListPokemon(val successListPokemon: List<PokemonResponse>) : ListPokemonResults()
+    data class SuccessListPokemon(val successListPokemon: PokemonResponse) : ListPokemonResults()  //Passa o Result
     data class ErrorListPokemon(val message: String) : ListPokemonResults()
 }
 
 sealed class StateType{
     object Loanding : StateType()
     object SessionExpired : StateType()
-    object SuccessCep : StateType()
-    object ErrorCep : StateType()
+    object SuccessList : StateType()
+    object ErrorList : StateType()
 }
 
 typealias ListPokemonMVIViewModel = MVIViewModel<ListPokemonActions, ListPokemonResults, ListPokemonState>

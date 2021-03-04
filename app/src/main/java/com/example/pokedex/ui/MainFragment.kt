@@ -10,6 +10,8 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.mvi.UiStateMachine
 import com.example.pokedex.R
 import com.example.pokedex.adapter.MainAdapter
+import com.example.pokedex.model.PokemonResponse
+import com.example.pokedex.model.PokemonResult
 import com.example.pokedex.mvilist.*
 import kotlinx.android.synthetic.main.fragment_main.*
 import org.koin.androidx.viewmodel.ext.android.viewModel
@@ -41,6 +43,18 @@ class MainFragment : ListPokemonMVIFragment(), MainAdapter.OnClickPokeListener {
     }
 
     override fun render(state: ListPokemonState) {
+        when(state.stateType){
+            is StateType.SuccessList -> renderSucessList(state)
+        }
+    }
+
+    private fun renderSucessList(state: ListPokemonState){
+        val response = state.successList!!
+        tv.text = response.count.toString()
+        if(response != null ){
+            val list: ArrayList<PokemonResult> = response.results
+            adapter.addListPoke(list)
+        }
     }
 
     override fun pokeClick(position: Int) {
