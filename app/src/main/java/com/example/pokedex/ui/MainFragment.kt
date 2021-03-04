@@ -6,6 +6,8 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.GridLayout
 import android.widget.LinearLayout
+import android.widget.Toast
+import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.mvi.UiStateMachine
 import com.example.pokedex.R
@@ -13,15 +15,20 @@ import com.example.pokedex.adapter.MainAdapter
 import com.example.pokedex.model.PokemonResponse
 import com.example.pokedex.model.PokemonResult
 import com.example.pokedex.mvilist.*
+import com.google.gson.Gson
+import com.google.gson.JsonParser
+import com.google.gson.reflect.TypeToken
 import kotlinx.android.synthetic.main.fragment_main.*
+import org.json.JSONArray
 import org.koin.androidx.viewmodel.ext.android.viewModel
+import java.lang.reflect.Array.get
 
 
 class MainFragment : ListPokemonMVIFragment(), MainAdapter.OnClickPokeListener {
     override val uiStateMachine: UiStateMachine<ListPokemonState> get() = viewModel
     private val viewModel: ListPokemonViewModel by viewModel()
     lateinit var adapter: MainAdapter
-    lateinit var layout: LinearLayoutManager
+    lateinit var layout: GridLayoutManager
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -37,9 +44,14 @@ class MainFragment : ListPokemonMVIFragment(), MainAdapter.OnClickPokeListener {
             ListPokemonActions.ListPokemonRequestAction()
         )
         adapter = MainAdapter(this, this)
-        layout = LinearLayoutManager(requireContext())
+        layout = GridLayoutManager(context, 2)
+        rv.adapter = adapter
         rv.layoutManager = layout
         rv.hasFixedSize()
+        val teste1: PokemonResult = PokemonResult("teste", "outro teste")
+        val teste2: PokemonResult = PokemonResult("teste1", "outro teste1")
+        val list : ArrayList<PokemonResult> = arrayListOf(teste1, teste2)
+        adapter.addListPoke(list)
     }
 
     override fun render(state: ListPokemonState) {
@@ -49,15 +61,17 @@ class MainFragment : ListPokemonMVIFragment(), MainAdapter.OnClickPokeListener {
     }
 
     private fun renderSucessList(state: ListPokemonState){
+        "teste".toast()
+
         val response = state.successList!!
-        tv.text = response.count.toString()
-        if(response != null ){
-            val list: ArrayList<PokemonResult> = response.results
-            adapter.addListPoke(list)
-        }
+        response.results
     }
 
     override fun pokeClick(position: Int) {
 
     }
+    private fun Any.toast(duration: Int = Toast.LENGTH_LONG): Toast {
+        return Toast.makeText(context, this.toString(), duration).apply { show() }
+    }
 }
+

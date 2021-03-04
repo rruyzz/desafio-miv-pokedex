@@ -11,7 +11,7 @@
         android:layout_height="wrap_content"
         android:padding="16dp"
         android:textSize="24sp"
-        tools:text="Pikachu"
+        android:text="name"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
@@ -23,8 +23,8 @@
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        tools:text="www.com.br"
         android:padding="16dp"
+        android:text="url"
         android:textSize="24sp"/>
 
 </androidx.constraintlayout.widget.ConstraintLayout>
