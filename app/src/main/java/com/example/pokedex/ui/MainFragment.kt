@@ -4,6 +4,7 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.Adapter
 import android.widget.GridLayout
 import android.widget.LinearLayout
 import android.widget.Toast
@@ -27,9 +28,14 @@ import java.lang.reflect.Array.get
 class MainFragment : ListPokemonMVIFragment(), MainAdapter.OnClickPokeListener {
     override val uiStateMachine: UiStateMachine<ListPokemonState> get() = viewModel
     private val viewModel: ListPokemonViewModel by viewModel()
-    lateinit var adapter: MainAdapter
-    lateinit var layout: GridLayoutManager
+    private var adapter: MainAdapter = MainAdapter( this)
+    lateinit var layout: LinearLayoutManager
 
+    val teste1: PokemonResult = PokemonResult("teste", "outro teste")
+    val teste2: PokemonResult = PokemonResult("teste1", "outro teste1")
+    val teste3: PokemonResult = PokemonResult("teste2", "outro teste2")
+
+    val list : ArrayList<PokemonResult> = arrayListOf(teste1, teste2, teste3)
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
@@ -43,16 +49,8 @@ class MainFragment : ListPokemonMVIFragment(), MainAdapter.OnClickPokeListener {
         viewModel.mutate(
             ListPokemonActions.ListPokemonRequestAction()
         )
-        adapter = MainAdapter(this, this)
-        layout = GridLayoutManager(context, 2)
-        rv.adapter = adapter
-        rv.layoutManager = layout
-        rv.hasFixedSize()
-        val teste1: PokemonResult = PokemonResult("teste", "outro teste")
-        val teste2: PokemonResult = PokemonResult("teste1", "outro teste1")
-        val list : ArrayList<PokemonResult> = arrayListOf(teste1, teste2)
-        adapter.addListPoke(list)
     }
+
 
     override fun render(state: ListPokemonState) {
         when(state.stateType){
@@ -62,9 +60,18 @@ class MainFragment : ListPokemonMVIFragment(), MainAdapter.OnClickPokeListener {
 
     private fun renderSucessList(state: ListPokemonState){
         "teste".toast()
-
         val response = state.successList!!
         response.results
+        putAdapater(list)
+    }
+
+    private fun putAdapater(list : ArrayList<PokemonResult>){
+        adapter = MainAdapter(this)
+        layout = LinearLayoutManager(context)
+        recycler_view.adapter = adapter
+        recycler_view.layoutManager = layout
+        recycler_view.hasFixedSize()
+        adapter.addListPoke(list)
     }
 
     override fun pokeClick(position: Int) {

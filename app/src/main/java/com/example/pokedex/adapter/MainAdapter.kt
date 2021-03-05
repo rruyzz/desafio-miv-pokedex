@@ -11,11 +11,15 @@ import com.example.pokedex.model.PokemonResult
 import com.example.pokedex.ui.MainFragment
 import kotlinx.android.synthetic.main.rv_list.view.*
 
-class MainAdapter(var listener: OnClickPokeListener, var context: MainFragment) :
+class MainAdapter(var listener: OnClickPokeListener) :
     RecyclerView.Adapter<MainAdapter.ListPokeAdapterViewHolder>() {
 
-    //    val result : PokemonResponse =
-    var list = arrayListOf<PokemonResult>()
+    val teste1: PokemonResult = PokemonResult("teste", "outro teste")
+    val teste2: PokemonResult = PokemonResult("teste1", "outro teste1")
+    val teste3: PokemonResult = PokemonResult("teste2", "outro teste2")
+
+    val list : ArrayList<PokemonResult> = arrayListOf(teste1, teste2, teste3)
+//    var list = arrayListOf<PokemonResult>()
     override fun onCreateViewHolder(
         parent: ViewGroup,
         viewType: Int
