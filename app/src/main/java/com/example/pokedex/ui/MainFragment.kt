@@ -31,11 +31,6 @@ class MainFragment : ListPokemonMVIFragment(), MainAdapter.OnClickPokeListener {
     private var adapter: MainAdapter = MainAdapter( this)
     lateinit var layout: LinearLayoutManager
 
-    val teste1: PokemonResult = PokemonResult("teste", "outro teste")
-    val teste2: PokemonResult = PokemonResult("teste1", "outro teste1")
-    val teste3: PokemonResult = PokemonResult("teste2", "outro teste2")
-
-    val list : ArrayList<PokemonResult> = arrayListOf(teste1, teste2, teste3)
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
@@ -61,22 +56,23 @@ class MainFragment : ListPokemonMVIFragment(), MainAdapter.OnClickPokeListener {
     private fun renderSucessList(state: ListPokemonState){
         "teste".toast()
         val response = state.successList!!
-        response.results
-        putAdapater(list)
+        var listapoke =  response.results
+        putAdapater(listapoke)
     }
 
-    private fun putAdapater(list : ArrayList<PokemonResult>){
+    private fun putAdapater(lista : ArrayList<PokemonResult>){
         adapter = MainAdapter(this)
         layout = LinearLayoutManager(context)
         recycler_view.adapter = adapter
         recycler_view.layoutManager = layout
         recycler_view.hasFixedSize()
-        adapter.addListPoke(list)
+        adapter.addListPoke(lista)
     }
 
     override fun pokeClick(position: Int) {
 
     }
+
     private fun Any.toast(duration: Int = Toast.LENGTH_LONG): Toast {
         return Toast.makeText(context, this.toString(), duration).apply { show() }
     }

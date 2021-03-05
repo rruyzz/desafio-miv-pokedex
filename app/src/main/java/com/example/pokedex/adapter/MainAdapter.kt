@@ -3,8 +3,10 @@ package com.example.pokedex.adapter
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.ImageView
 import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
+import coil.load
 import com.example.pokedex.R
 import com.example.pokedex.model.PokemonResponse
 import com.example.pokedex.model.PokemonResult
@@ -14,12 +16,7 @@ import kotlinx.android.synthetic.main.rv_list.view.*
 class MainAdapter(var listener: OnClickPokeListener) :
     RecyclerView.Adapter<MainAdapter.ListPokeAdapterViewHolder>() {
 
-    val teste1: PokemonResult = PokemonResult("teste", "outro teste")
-    val teste2: PokemonResult = PokemonResult("teste1", "outro teste1")
-    val teste3: PokemonResult = PokemonResult("teste2", "outro teste2")
-
-    val list : ArrayList<PokemonResult> = arrayListOf(teste1, teste2, teste3)
-//    var list = arrayListOf<PokemonResult>()
+    var list = arrayListOf<PokemonResult>()
     override fun onCreateViewHolder(
         parent: ViewGroup,
         viewType: Int
@@ -30,8 +27,8 @@ class MainAdapter(var listener: OnClickPokeListener) :
 
     override fun getItemCount() = list.size
 
-    fun addListPoke(list: ArrayList<PokemonResult>) {
-        list.addAll(list)
+    fun addListPoke(lista: ArrayList<PokemonResult>) {
+        list.addAll(lista)
         notifyDataSetChanged()
     }
 
@@ -41,7 +38,7 @@ class MainAdapter(var listener: OnClickPokeListener) :
     ) {
         val poke = list[position]
         holder.namePoke.text = poke.name.toString()
-        holder.urlPoke.text = poke.url.toString()
+        holder.imagePoke.load("https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/shiny/${position+1}.png")
     }
 
     interface OnClickPokeListener {
@@ -51,7 +48,7 @@ class MainAdapter(var listener: OnClickPokeListener) :
     inner class ListPokeAdapterViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView),
         View.OnClickListener {
         val namePoke: TextView = itemView.text_view_name_pokemon
-        val urlPoke: TextView = itemView.url
+        val imagePoke: ImageView = itemView.image_view_pokemon
 
         init {
             itemView.setOnClickListener(this)
