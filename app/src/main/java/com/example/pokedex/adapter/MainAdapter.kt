@@ -12,6 +12,7 @@ import com.example.pokedex.model.PokemonResponse
 import com.example.pokedex.model.PokemonResult
 import com.example.pokedex.ui.MainFragment
 import kotlinx.android.synthetic.main.rv_list.view.*
+import org.w3c.dom.Text
 
 class MainAdapter(var listener: OnClickPokeListener) :
     RecyclerView.Adapter<MainAdapter.ListPokeAdapterViewHolder>() {
@@ -37,8 +38,10 @@ class MainAdapter(var listener: OnClickPokeListener) :
         position: Int
     ) {
         val poke = list[position]
-        holder.namePoke.text = poke.name.toString()
+        holder.namePoke.text = poke.name
+        holder.numberPoke.text = "#${position+1}"
         holder.imagePoke.load("https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/shiny/${position+1}.png")
+
     }
 
     interface OnClickPokeListener {
@@ -48,6 +51,7 @@ class MainAdapter(var listener: OnClickPokeListener) :
     inner class ListPokeAdapterViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView),
         View.OnClickListener {
         val namePoke: TextView = itemView.text_view_name_pokemon
+        val numberPoke: TextView = itemView.text_view_number_pokemon
         val imagePoke: ImageView = itemView.image_view_pokemon
 
         init {

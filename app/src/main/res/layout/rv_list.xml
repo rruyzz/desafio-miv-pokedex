@@ -20,9 +20,20 @@
             android:padding="16dp"
             android:text="name"
             android:textSize="24sp"
-            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintBottom_toTopOf="@+id/text_view_number_pokemon"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent" />
+
+        <TextView
+            android:id="@+id/text_view_number_pokemon"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="#001"
+            android:padding="16dp"
+            android:textSize="24sp"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/text_view_name_pokemon" />
 
         <ImageView
             android:id="@+id/image_view_pokemon"
