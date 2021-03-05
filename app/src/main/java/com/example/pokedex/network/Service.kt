@@ -16,8 +16,8 @@ import retrofit2.http.Query
 interface Service {
     @GET("pokemon")
     suspend fun getListPokemonService(
-        @Query("limit") limit: Int? = 20,
-        @Query("offset") offset: Int? = 0
+        @Query("limit") limit: Int?,
+        @Query("offset") offset: Int?
     ): Response<PokemonResponse>
 
     @GET("pokemon/{id}")

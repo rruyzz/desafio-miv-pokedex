@@ -76,4 +76,8 @@ dependencies {
 
     //CardView
     implementation "androidx.cardview:cardview:1.0.0"
+
+    //Pagination
+    implementation "android.arch.paging:runtime:2.1.2"
+    implementation "android.arch.paging:rxjava2:2.1.2"
 }

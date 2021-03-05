@@ -8,6 +8,6 @@ import retrofit2.Response
 class Repository(private val service: Service) {
 
     suspend fun getListPokemonService() : Response<PokemonResponse> {
-        return service.getListPokemonService()
+        return service.getListPokemonService(20, 20)
     }
 }
