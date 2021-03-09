@@ -19,7 +19,7 @@ data class ListPokemonState (
 
 @MVIActions
 sealed class ListPokemonActions {
-    class ListPokemonRequestAction() : ListPokemonActions()
+    data class ListPokemonRequestAction(val limit: Int, val offset: Int) : ListPokemonActions()
 }
 
 @MVIResults

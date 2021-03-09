@@ -10,7 +10,7 @@ class ListPokemonDispatcher(private val repository: Repository) : ListPokemonMVI
             is ListPokemonActions.ListPokemonRequestAction -> {
                 emit(ListPokemonResults.Loanding)
                 val result = RetrofitRequest.doRetrofitRequest("getListPokemonService") {
-                    repository.getListPokemonService()
+                    repository.getListPokemonService(action.limit, action.offset)
                 }
                 when{
                     result.hasError ->emit(ListPokemonResults.ErrorListPokemon(result.message!!))

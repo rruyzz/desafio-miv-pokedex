@@ -18,5 +18,18 @@
         android:id="@+id/mainFragment"
         android:name="com.example.pokedex.ui.MainFragment"
         android:label="fragment_main"
-        tools:layout="@layout/fragment_main" />
+        tools:layout="@layout/fragment_main" >
+        <action
+            android:id="@+id/action_mainFragment_to_detailPokeFragment"
+            app:destination="@id/detailPokeFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/detailPokeFragment"
+        android:name="com.example.pokedex.detailpoke.DetailPokeFragment"
+        android:label="fragment_detail_poke"
+        tools:layout="@layout/fragment_detail_poke" >
+        <argument
+            android:name="position"
+            app:argType="integer" />
+    </fragment>
 </navigation>

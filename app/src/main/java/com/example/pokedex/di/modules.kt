@@ -1,5 +1,7 @@
 package com.example.pokedex.di
 
+import com.example.pokedex.detailpoke.DetailPokeDispatcher
+import com.example.pokedex.detailpoke.DetailPokemonViewModel
 import com.example.pokedex.mvilist.ListPokemonDispatcher
 import com.example.pokedex.mvilist.ListPokemonViewModel
 import com.example.pokedex.network.Repository
@@ -14,8 +16,12 @@ import retrofit2.converter.gson.GsonConverterFactory
 
 val module = module{
     factory { Repository(provideRetrofit()) }
+
     factory  { ListPokemonDispatcher(get())}
     viewModel { ListPokemonViewModel(get()) }
+
+    factory { DetailPokeDispatcher(get()) }
+    viewModel { DetailPokemonViewModel(get()) }
 }
 
 

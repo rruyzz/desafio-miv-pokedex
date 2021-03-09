@@ -21,7 +21,7 @@ interface Service {
     ): Response<PokemonResponse>
 
     @GET("pokemon/{id}")
-    suspend fun getPokemonService(@Path("id") id:String) : Pokemon
+    suspend fun getPokemonService(@Path("id") id:String) : Response<Pokemon>
 }
 
 val logger = HttpLoggingInterceptor().setLevel(HttpLoggingInterceptor.Level.BODY)
