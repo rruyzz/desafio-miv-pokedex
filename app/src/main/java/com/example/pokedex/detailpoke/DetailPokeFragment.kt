@@ -7,7 +7,10 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
+import androidx.activity.OnBackPressedCallback
+import androidx.activity.addCallback
 import androidx.core.content.ContextCompat
+import androidx.navigation.fragment.findNavController
 import androidx.navigation.fragment.navArgs
 import coil.load
 import com.example.mvi.UiStateMachine
@@ -43,11 +46,11 @@ class DetailPokeFragment : DetailPokemonMVIFragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         loadPoke(currentId.position)
+        backList()
         scope.launch {
             delay(2000)
             loadSpecie(currentId.position)
         }
-
     }
 
     override fun render(state: DetailPokemonState) {
@@ -64,12 +67,14 @@ class DetailPokeFragment : DetailPokemonMVIFragment() {
         progressBarSpecie.visibility = View.GONE
 
     }
+
     private fun renderSuccessDetail(state: DetailPokemonState){
         val responsePokemon = state.successDetailPoke
         progressBarPoke1.visibility = View.GONE
         progressBarPoke.visibility = View.GONE
         if(responsePokemon != null ) setView(responsePokemon)
     }
+
     private fun renderLoading(state: DetailPokemonState){
         if(state.successDetailPoke==null){
             progressBarPoke1.visibility = View.VISIBLE
@@ -79,6 +84,7 @@ class DetailPokeFragment : DetailPokemonMVIFragment() {
             progressBarSpecie.visibility = View.VISIBLE
         }
     }
+
     private fun loadPoke(idPoke: Int){
         val id = idPoke+1
         image_view_poke.load("https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/shiny/$id.png")
@@ -86,6 +92,7 @@ class DetailPokeFragment : DetailPokemonMVIFragment() {
             DetailPokemonAction.DetailPokemonResquestAction(id.toString())
         )
     }
+
     private fun loadSpecie(idPoke: Int){
         val id = idPoke+1
         viewModel.mutate(
@@ -103,10 +110,13 @@ class DetailPokeFragment : DetailPokemonMVIFragment() {
         text_view_number.text = "#${responsePokemon.id.toString()}"
         text_view_height.text = responsePokemon.height.toString()
         text_view_weight.text = responsePokemon.weight.toString()
-        text_view_ability1.text = responsePokemon.abilities[0].ability.name
-        text_view_ability2.text = responsePokemon.abilities[1].ability.name
-//        materialCardView.setCardBackgroundColor(getColor(color.black))
-//        constraint_1.setBackgroundColor(R.color.black)
+        if(responsePokemon.abilities.size == 2) {
+            text_view_ability1.text = responsePokemon.abilities[0].ability.name
+            text_view_ability2.text = responsePokemon.abilities[1].ability.name
+        } else {
+            text_view_ability1.text = responsePokemon.abilities[0].ability.name
+            text_view_ability2.visibility = View.GONE
+        }
     }
 
     private fun setViewSpecie(responseSpecie: PokemonSpecies){
@@ -118,4 +128,12 @@ class DetailPokeFragment : DetailPokemonMVIFragment() {
         return Toast.makeText(context, this.toString(), duration).apply { show() }
     }
 
+    private fun backList(){
+        val callback = object : OnBackPressedCallback(true){
+            override fun handleOnBackPressed() {
+                findNavController().navigate(R.id.action_detailPokeFragment_to_mainFragment)
+            }
+        }
+        requireActivity().onBackPressedDispatcher.addCallback(callback)
+    }
 }
