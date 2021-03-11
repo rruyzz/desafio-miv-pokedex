@@ -51,7 +51,7 @@ class MainFragment : ListPokemonMVIFragment(), MainAdapter.OnClickPokeListener {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         loadData(0)
-//        setRecyclerViewScrollListener()
+        setRecyclerViewScrollListener()
     }
 
     override fun onResume() {
@@ -74,14 +74,9 @@ class MainFragment : ListPokemonMVIFragment(), MainAdapter.OnClickPokeListener {
         "requisicao".toast()
         val response = state.successList!!
         listapoke = response.results
-        listcomplete.plusAssign(listapoke)
-        putAdapter(listcomplete)
-        setRecyclerViewScrollListener()
-//        initScrollListener()
+        putAdapter(listapoke)
     }
-    private fun addList(list: ArrayList<PokemonResponse>) {
-        return listcomplete.plusAssign(listapoke)
-    }
+
     private fun renderLoadListState() {
         showLoanding()
     }
@@ -91,8 +86,9 @@ class MainFragment : ListPokemonMVIFragment(), MainAdapter.OnClickPokeListener {
         layout = LinearLayoutManager(context)
         recycler_view.adapter = adapter
         recycler_view.layoutManager = layout
-        recycler_view.hasFixedSize()
-        adapter.addListPoke(lista, offset)
+//        recycler_view.hasFixedSize()
+        listcomplete.plusAssign(listapoke)
+        adapter.addListPoke(listcomplete)
         progressBar.visibility = View.INVISIBLE
     }
 
@@ -115,34 +111,20 @@ class MainFragment : ListPokemonMVIFragment(), MainAdapter.OnClickPokeListener {
                 super.onScrollStateChanged(recycler_view, newState)
                 val totalItemCount = recyclerView!!.layoutManager?.itemCount
                 if (totalItemCount == lastVisibleItemPosition + 1) {
-                    recycler_view.removeOnScrollListener(scrollListener)
                     offset += 20
                     loadData(offset)
-                    Log.d("Offset", "$offset")
-                    Log.d("MyTAG", "Load new list")
+                    Log.d("HTTPS", "$offset")
+                    Log.d("HTTPS", "Load new list")
                 }
             }
         }
         recycler_view.addOnScrollListener(scrollListener)
     }
 
-//    private fun initScrollListener() {
-//        recycler_view.addOnScrollListener(object : RecyclerView.OnScrollListener() {
-//            override fun onScrolled(recyclerView: RecyclerView, dx: Int, dy: Int) {
-//                super.onScrolled(recyclerView, dx, dy)
-//                if (layout != null && layout.findLastCompletelyVisibleItemPosition() ==
-//                    listapoke.size - 1
-//                ) {
-//                    offset += 20
-//                    loadData(offset)
-//                }
-//            }
-//        })
-//    }
-
     private fun loadData(offset: Int) {
         viewModel.mutate(
             ListPokemonActions.ListPokemonRequestAction(20, offset)
         )
+        adapter.notifyDataSetChanged()
     }
 }

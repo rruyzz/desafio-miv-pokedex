@@ -28,9 +28,9 @@ class MainAdapter(var listener: OnClickPokeListener) :
 
     override fun getItemCount() = list.size
 
-    fun addListPoke(lista: ArrayList<PokemonResult>, position: Int) {
+    fun addListPoke(lista: ArrayList<PokemonResult>) {
         list.addAll(lista)
-        notifyDataSetChanged()
+//        notifyDataSetChanged()
 //        notifyItemInserted(position-20)
 //        notifyItemRangeInserted()
     }
