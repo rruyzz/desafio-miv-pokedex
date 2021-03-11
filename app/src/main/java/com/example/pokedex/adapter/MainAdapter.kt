@@ -31,7 +31,7 @@ class MainAdapter(var listener: OnClickPokeListener) :
     fun addListPoke(lista: ArrayList<PokemonResult>, position: Int) {
         list.addAll(lista)
         notifyDataSetChanged()
-        notifyItemInserted(position-20)
+//        notifyItemInserted(position-20)
 //        notifyItemRangeInserted()
     }
 

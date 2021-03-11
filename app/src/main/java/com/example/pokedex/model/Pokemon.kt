@@ -274,7 +274,7 @@ data class PokemonSpecies(
     val color: PokemonResult,
     val shape: PokemonResult,
     val evolvesFromSpecies: PokemonResult?,
-//    val evolutionChain: ApiResource,
+    val evolutionChain: String,//ApiResource,
     val habitat: PokemonResult?,
     val generation: PokemonResult,
     val names: List<Name>,
@@ -282,14 +282,16 @@ data class PokemonSpecies(
     val formDescriptions: List<Description>,
     val genera: List<Genus>,
     val varieties: List<PokemonSpeciesVariety>,
+    @SerializedName("flavor_text_entries")
     val flavorTextEntries: List<PokemonSpeciesFlavorText>
-)
+) : Serializable
 
 data class PokemonSpeciesFlavorText(
+    @SerializedName("flavor_text")
     val flavorText: String,
     val language: PokemonResult,
     val version: PokemonResult
-)
+) : Serializable
 
 data class Genus(
     val genus: String,

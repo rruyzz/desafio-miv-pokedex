@@ -17,6 +17,16 @@ class DetailPokeDispatcher(private val repository: Repository) : DetailPokemonMV
                     else -> emit((DetailPokemonResult.SucessDetailPokemon(result.response!!)))
                 }
             }
+            is DetailPokemonAction.SpeciePokemonRequestAction -> {
+                emit(DetailPokemonResult.Loanding)
+                val result = RetrofitRequest.doRetrofitRequest("getPokemonSpecieService"){
+                    repository.getPokemonSpecieService(action.id)
+                }
+                when {
+                    result.hasError -> emit(DetailPokemonResult.ErrorSpeciePokemon(result.message!!))
+                    else -> emit((DetailPokemonResult.SuccessSpeciePokemon(result.response!!)))
+                }
+            }
         }
     }
 }

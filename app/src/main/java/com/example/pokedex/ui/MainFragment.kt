@@ -32,10 +32,11 @@ class MainFragment : ListPokemonMVIFragment(), MainAdapter.OnClickPokeListener {
     private val viewModel: ListPokemonViewModel by viewModel()
     private var adapter: MainAdapter = MainAdapter(this)
     private var offset = 0
+    var listcomplete :  ArrayList<PokemonResult> = arrayListOf()
     lateinit var layout: LinearLayoutManager
     var isLoading = false
-    lateinit var listapoke: ArrayList<PokemonResult>
-    lateinit var nextPage: String
+    var listapoke: ArrayList<PokemonResult> = arrayListOf()
+//    lateinit var nextPage: String
     private val lastVisibleItemPosition: Int
         get() = layout.findLastVisibleItemPosition()
 
@@ -62,7 +63,6 @@ class MainFragment : ListPokemonMVIFragment(), MainAdapter.OnClickPokeListener {
         )
     }
 
-
     override fun render(state: ListPokemonState) {
         when (state.stateType) {
             is StateType.SuccessList -> renderSucessList(state)
@@ -74,12 +74,14 @@ class MainFragment : ListPokemonMVIFragment(), MainAdapter.OnClickPokeListener {
         "teste".toast()
         val response = state.successList!!
         listapoke = response.results
-        nextPage = response.next.toString()
-        putAdapter(listapoke)
-//        setRecyclerViewScrollListener()
-//        initScrollListener()
+        listcomplete.plusAssign(listapoke)
+        putAdapter(listcomplete)
+        setRecyclerViewScrollListener()
     }
-
+    private fun addList(list: ArrayList<PokemonResult>, listanova: ArrayList<PokemonResult>) : ArrayList<PokemonResult>{
+        list.addAll(listanova)
+        return list
+    }
     private fun renderLoadListState() {
         showLoanding()
     }
@@ -107,32 +109,29 @@ class MainFragment : ListPokemonMVIFragment(), MainAdapter.OnClickPokeListener {
         progressBar.visibility = View.VISIBLE
     }
 
+    private fun setRecyclerViewScrollListener() {
+        scrollListener = object : RecyclerView.OnScrollListener() {
+            override fun onScrollStateChanged(recyclerView: RecyclerView, newState: Int) {
+                super.onScrollStateChanged(recycler_view, newState)
+                val totalItemCount = recyclerView!!.layoutManager?.itemCount
+                if (totalItemCount == lastVisibleItemPosition + 1) {
+                    offset+=20
+                    loadData(offset)
+                    Log.d("Offset", "$offset")
+                    Log.d("MyTAG", "Load new list")
+                    recycler_view.removeOnScrollListener(scrollListener)
+                }
+            }
+        }
+        recycler_view.addOnScrollListener(scrollListener)
+    }
+
+    private fun loadData(offset: Int) {
+        viewModel.mutate(
+            ListPokemonActions.ListPokemonRequestAction(20, offset)
+        )
+    }
 }
-
-
-//    private fun setRecyclerViewScrollListener() {
-//        scrollListener = object : RecyclerView.OnScrollListener() {
-//            override fun onScrollStateChanged(recyclerView: RecyclerView, newState: Int) {
-//                super.onScrollStateChanged(recycler_view, newState)
-//                val totalItemCount = recyclerView!!.layoutManager?.itemCount
-//                if (totalItemCount == lastVisibleItemPosition + 1) {
-//                    offset+=20
-//                    loadData(offset)
-//                    Log.d("Offset", "$offset")
-//                    Log.d("MyTAG", "Load new list")
-//                    recycler_view.removeOnScrollListener(scrollListener)
-//                }
-//            }
-//        }
-//        recycler_view.addOnScrollListener(scrollListener)
-//    }
-//
-//    private fun loadData(offset: Int) {
-//        viewModel.mutate(
-//            ListPokemonActions.ListPokemonRequestAction(20, offset)
-//        )
-//    }
-
 
 //        recycler_view.addOnScrollListener(object : RecyclerView.OnScrollListener() {
 //            override fun onScrollStateChanged(recyclerView: RecyclerView, newState: Int) {

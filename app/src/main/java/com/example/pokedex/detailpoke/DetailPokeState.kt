@@ -7,18 +7,21 @@ import com.example.mvi_annotations.MVIActions
 import com.example.mvi_annotations.MVIResults
 import com.example.mvi_annotations.MVIState
 import com.example.pokedex.model.Pokemon
+import com.example.pokedex.model.PokemonSpecies
 import com.example.pokedex.mvilist.StateType
 
 @MVIState
 data class DetailPokemonState(
     val stateTypeDetail: StateTypeDetail? = null,
     val messageDetail: String = "",
-    val successDetailPoke : Pokemon? = null
+    val successDetailPoke : Pokemon? = null,
+    val successSpeciePoke: PokemonSpecies? = null
 )
 
 @MVIActions
 sealed class DetailPokemonAction {
     data class DetailPokemonResquestAction(val id: String) : DetailPokemonAction()
+    data class SpeciePokemonRequestAction(val id: String) : DetailPokemonAction()
 }
 
 @MVIResults
@@ -28,6 +31,9 @@ sealed class DetailPokemonResult(){
 
     data class SucessDetailPokemon(val successDetailPoke: Pokemon) : DetailPokemonResult()
     data class ErrorDetailPokemon(val message: String) : DetailPokemonResult()
+
+    data class SuccessSpeciePokemon(val successSpeciePokemon: PokemonSpecies) :DetailPokemonResult()
+    data class ErrorSpeciePokemon(val message: String) : DetailPokemonResult()
 }
 
 sealed class StateTypeDetail{
@@ -35,6 +41,8 @@ sealed class StateTypeDetail{
     object SessionExpired : StateTypeDetail()
     object SucessDetailPokemon : StateTypeDetail()
     object ErrorDetailPokemon : StateTypeDetail()
+    object SuccessSpeciePokemon : StateTypeDetail()
+    object ErrorSpeciePokemon : StateTypeDetail()
 }
 
 typealias DetailPokemonMVIViewModel = MVIViewModel<DetailPokemonAction, DetailPokemonResult, DetailPokemonState>

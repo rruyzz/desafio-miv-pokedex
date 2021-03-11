@@ -2,6 +2,7 @@ package com.example.pokedex.network
 
 import com.example.pokedex.model.Pokemon
 import com.example.pokedex.model.PokemonResponse
+import com.example.pokedex.model.PokemonSpecies
 import com.google.gson.JsonObject
 import okhttp3.OkHttpClient
 import okhttp3.logging.HttpLoggingInterceptor
@@ -22,6 +23,9 @@ interface Service {
 
     @GET("pokemon/{id}")
     suspend fun getPokemonService(@Path("id") id:String) : Response<Pokemon>
+
+    @GET("pokemon-species/{id}")
+    suspend fun getPokemonSpecieService(@Path("id") id:String) : Response<PokemonSpecies>
 }
 
 val logger = HttpLoggingInterceptor().setLevel(HttpLoggingInterceptor.Level.BODY)
