@@ -5,8 +5,10 @@ import android.os.Handler
 import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
+import android.view.View.INVISIBLE
 import android.view.ViewGroup
 import android.widget.*
+import androidx.core.view.isVisible
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.LinearLayoutManager
@@ -31,12 +33,11 @@ class MainFragment : ListPokemonMVIFragment(), MainAdapter.OnClickPokeListener {
     override val uiStateMachine: UiStateMachine<ListPokemonState> get() = viewModel
     private val viewModel: ListPokemonViewModel by viewModel()
     private var adapter: MainAdapter = MainAdapter(this)
+    lateinit var layout: LinearLayoutManager
     private var offset = 0
     var listcomplete: ArrayList<PokemonResult> = arrayListOf()
-    lateinit var layout: LinearLayoutManager
     var listapoke: ArrayList<PokemonResult> = arrayListOf()
-    private val lastVisibleItemPosition: Int
-        get() = layout.findLastVisibleItemPosition()
+    private val lastVisibleItemPosition: Int get() = layout.findLastVisibleItemPosition()
     private lateinit var scrollListener: RecyclerView.OnScrollListener
 
 
@@ -52,6 +53,7 @@ class MainFragment : ListPokemonMVIFragment(), MainAdapter.OnClickPokeListener {
         super.onViewCreated(view, savedInstanceState)
         loadData(0)
         setRecyclerViewScrollListener()
+        reload()
     }
 
     override fun onResume() {
@@ -65,8 +67,9 @@ class MainFragment : ListPokemonMVIFragment(), MainAdapter.OnClickPokeListener {
 
     override fun render(state: ListPokemonState) {
         when (state.stateType) {
-            is StateType.SuccessList -> renderSucessList(state)
+            is StateType.ErrorList -> renderErrorListState()
             is StateType.Loanding -> renderLoadListState()
+            else -> renderSucessList(state)
         }
     }
 
@@ -75,10 +78,8 @@ class MainFragment : ListPokemonMVIFragment(), MainAdapter.OnClickPokeListener {
         val response = state.successList!!
         listapoke = response.results
         putAdapter(listapoke)
-    }
-
-    private fun renderLoadListState() {
-        showLoanding()
+        button_reload.visibility = View.INVISIBLE
+        text_view_error.visibility = View.INVISIBLE
     }
 
     private fun putAdapter(lista: ArrayList<PokemonResult>) {
@@ -86,23 +87,10 @@ class MainFragment : ListPokemonMVIFragment(), MainAdapter.OnClickPokeListener {
         layout = LinearLayoutManager(context)
         recycler_view.adapter = adapter
         recycler_view.layoutManager = layout
-//        recycler_view.hasFixedSize()
+        recycler_view.hasFixedSize()
         listcomplete.plusAssign(listapoke)
         adapter.addListPoke(listcomplete)
-        progressBar.visibility = View.INVISIBLE
-    }
-
-    override fun pokeClick(position: Int) {
-        val action = MainFragmentDirections.actionMainFragmentToDetailPokeFragment(position)
-        findNavController().navigate(action)
-    }
-
-    private fun Any.toast(duration: Int = Toast.LENGTH_LONG): Toast {
-        return Toast.makeText(context, this.toString(), duration).apply { show() }
-    }
-
-    private fun showLoanding() {
-        progressBar.visibility = View.VISIBLE
+        progressBar.visibility = INVISIBLE
     }
 
     private fun setRecyclerViewScrollListener() {
@@ -126,5 +114,39 @@ class MainFragment : ListPokemonMVIFragment(), MainAdapter.OnClickPokeListener {
             ListPokemonActions.ListPokemonRequestAction(20, offset)
         )
         adapter.notifyDataSetChanged()
+    }
+
+    override fun pokeClick(position: Int) {
+        val action = MainFragmentDirections.actionMainFragmentToDetailPokeFragment(position)
+        findNavController().navigate(action)
+    }
+
+    private fun Any.toast(duration: Int = Toast.LENGTH_LONG): Toast {
+        return Toast.makeText(context, this.toString(), duration).apply { show() }
+    }
+
+    private fun showLoanding() {
+        progressBar.visibility = View.VISIBLE
+    }
+
+    private fun hideLoanding(){
+        progressBar.visibility = View.GONE
+    }
+
+    private fun renderLoadListState() {
+        showLoanding()
+    }
+
+    private fun renderErrorListState(){
+        "error".toast()
+        hideLoanding()
+        text_view_error.visibility = View.VISIBLE
+        button_reload.visibility = View.VISIBLE
+    }
+
+    private fun reload(){
+        button_reload.setOnClickListener {
+            loadData(0)
+        }
     }
 }
