@@ -34,8 +34,6 @@ class MainAdapter(var listener: OnClickPokeListener) :
         list.plusAssign(lista)
         list.addAll(listcomplete)
         notifyDataSetChanged()
-//        notifyItemInserted(position-20)
-//        notifyItemRangeInserted()
     }
     override fun onBindViewHolder(
         holder: MainAdapter.ListPokeAdapterViewHolder,

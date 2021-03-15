@@ -38,7 +38,6 @@ class MainFragment : ListPokemonMVIFragment(), MainAdapter.OnClickPokeListener {
     var listcomplete: ArrayList<PokemonResult> = arrayListOf()
     var listapoke: ArrayList<PokemonResult> = arrayListOf()
     private val lastVisibleItemPosition: Int get() = layout.findLastVisibleItemPosition()
-//    private val lastItem: Int get() = layout.find
     private lateinit var scrollListener: RecyclerView.OnScrollListener
 
 
@@ -60,8 +59,8 @@ class MainFragment : ListPokemonMVIFragment(), MainAdapter.OnClickPokeListener {
 
     override fun onResume() {
         super.onResume()
-        offset = 0
-        listcomplete = arrayListOf()
+//        offset = 0
+//        listcomplete = arrayListOf()
 //        viewModel.mutate(
 //            ListPokemonActions.ListPokemonRequestAction(20, 0)
 //        )
@@ -90,10 +89,8 @@ class MainFragment : ListPokemonMVIFragment(), MainAdapter.OnClickPokeListener {
         layout = LinearLayoutManager(context)
         recycler_view.adapter = adapter
         recycler_view.layoutManager = layout
-//        recycler_view.hasFixedSize()
         listcomplete.plusAssign(listapoke)
-        adapter.addListPoke(listcomplete)
-//        adapter.notifyDataSetChanged()
+//        adapter.addListPoke(listcomplete)
         progressBar.visibility = INVISIBLE
     }
 
