@@ -18,6 +18,8 @@ class MainAdapter(var listener: OnClickPokeListener) :
     RecyclerView.Adapter<MainAdapter.ListPokeAdapterViewHolder>() {
 
     var list = arrayListOf<PokemonResult>()
+    var listcomplete: ArrayList<PokemonResult> = arrayListOf()
+
     override fun onCreateViewHolder(
         parent: ViewGroup,
         viewType: Int
@@ -29,12 +31,12 @@ class MainAdapter(var listener: OnClickPokeListener) :
     override fun getItemCount() = list.size
 
     fun addListPoke(lista: ArrayList<PokemonResult>) {
-        list.addAll(lista)
-//        notifyDataSetChanged()
+        list.plusAssign(lista)
+        list.addAll(listcomplete)
+        notifyDataSetChanged()
 //        notifyItemInserted(position-20)
 //        notifyItemRangeInserted()
     }
-
     override fun onBindViewHolder(
         holder: MainAdapter.ListPokeAdapterViewHolder,
         position: Int

@@ -38,6 +38,7 @@ class MainFragment : ListPokemonMVIFragment(), MainAdapter.OnClickPokeListener {
     var listcomplete: ArrayList<PokemonResult> = arrayListOf()
     var listapoke: ArrayList<PokemonResult> = arrayListOf()
     private val lastVisibleItemPosition: Int get() = layout.findLastVisibleItemPosition()
+//    private val lastItem: Int get() = layout.find
     private lateinit var scrollListener: RecyclerView.OnScrollListener
 
 
@@ -53,6 +54,7 @@ class MainFragment : ListPokemonMVIFragment(), MainAdapter.OnClickPokeListener {
         super.onViewCreated(view, savedInstanceState)
         loadData(0)
         setRecyclerViewScrollListener()
+        putAdapter(listapoke)
         reload()
     }
 
@@ -77,9 +79,10 @@ class MainFragment : ListPokemonMVIFragment(), MainAdapter.OnClickPokeListener {
         "requisicao".toast()
         val response = state.successList!!
         listapoke = response.results
-        putAdapter(listapoke)
+        adapter.addListPoke(listapoke)
         button_reload.visibility = View.INVISIBLE
         text_view_error.visibility = View.INVISIBLE
+        hideLoanding()
     }
 
     private fun putAdapter(lista: ArrayList<PokemonResult>) {
@@ -87,9 +90,10 @@ class MainFragment : ListPokemonMVIFragment(), MainAdapter.OnClickPokeListener {
         layout = LinearLayoutManager(context)
         recycler_view.adapter = adapter
         recycler_view.layoutManager = layout
-        recycler_view.hasFixedSize()
+//        recycler_view.hasFixedSize()
         listcomplete.plusAssign(listapoke)
         adapter.addListPoke(listcomplete)
+//        adapter.notifyDataSetChanged()
         progressBar.visibility = INVISIBLE
     }
 
@@ -113,7 +117,6 @@ class MainFragment : ListPokemonMVIFragment(), MainAdapter.OnClickPokeListener {
         viewModel.mutate(
             ListPokemonActions.ListPokemonRequestAction(20, offset)
         )
-        adapter.notifyDataSetChanged()
     }
 
     override fun pokeClick(position: Int) {
@@ -129,7 +132,7 @@ class MainFragment : ListPokemonMVIFragment(), MainAdapter.OnClickPokeListener {
         progressBar.visibility = View.VISIBLE
     }
 
-    private fun hideLoanding(){
+    private fun hideLoanding() {
         progressBar.visibility = View.GONE
     }
 
@@ -137,14 +140,14 @@ class MainFragment : ListPokemonMVIFragment(), MainAdapter.OnClickPokeListener {
         showLoanding()
     }
 
-    private fun renderErrorListState(){
+    private fun renderErrorListState() {
         "error".toast()
         hideLoanding()
         text_view_error.visibility = View.VISIBLE
         button_reload.visibility = View.VISIBLE
     }
 
-    private fun reload(){
+    private fun reload() {
         button_reload.setOnClickListener {
             loadData(0)
         }
