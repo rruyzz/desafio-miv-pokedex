@@ -17,6 +17,16 @@ class ListPokemonDispatcher(private val repository: Repository) : ListPokemonMVI
                     else -> emit((ListPokemonResults.SuccessListPokemon(result.response!!)))
                 }
             }
+            is ListPokemonActions.SearchPokemonRequestAction ->{
+                emit(ListPokemonResults.Loanding)
+                val result = RetrofitRequest.doRetrofitRequest("getPokemonService"){
+                    repository.getPokemonService(action.pokemonName)
+                }
+                when{
+                    result.hasError -> emit(ListPokemonResults.ErrorSearchPokemon(result.message!!))
+                    else -> emit((ListPokemonResults.SuccessSearchPokemon(result.response!!)))
+                }
+            }
         }
     }
 }

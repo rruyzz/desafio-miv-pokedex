@@ -8,17 +8,16 @@ import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
 import coil.load
 import com.example.pokedex.R
-import com.example.pokedex.model.PokemonResponse
+import com.example.pokedex.model.Pokemon
 import com.example.pokedex.model.PokemonResult
-import com.example.pokedex.ui.MainFragment
 import kotlinx.android.synthetic.main.rv_list.view.*
-import org.w3c.dom.Text
 
 class MainAdapter(var listener: OnClickPokeListener) :
     RecyclerView.Adapter<MainAdapter.ListPokeAdapterViewHolder>() {
 
     var list = arrayListOf<PokemonResult>()
-    var listcomplete: ArrayList<PokemonResult> = arrayListOf()
+    lateinit var pokemon: Pokemon
+    var idPoke: Int? = null
 
     override fun onCreateViewHolder(
         parent: ViewGroup,
@@ -31,8 +30,17 @@ class MainAdapter(var listener: OnClickPokeListener) :
     override fun getItemCount() = list.size
 
     fun addListPoke(lista: ArrayList<PokemonResult>) {
-        list.plusAssign(lista)
-        list.addAll(listcomplete)
+        list.addAll(lista)
+        notifyDataSetChanged()
+    }
+    fun clearListPoke(lista: ArrayList<PokemonResult>) {
+        list.clear()
+        notifyDataSetChanged()
+    }
+    fun addSearchPoke(pokemonItem: ArrayList<PokemonResult>, id: Int){
+        list.clear()
+        list.addAll(pokemonItem)
+        idPoke = id
         notifyDataSetChanged()
     }
     override fun onBindViewHolder(
@@ -40,14 +48,18 @@ class MainAdapter(var listener: OnClickPokeListener) :
         position: Int
     ) {
         val poke = list[position]
-        holder.namePoke.text = poke.name
-        holder.numberPoke.text = "#${position+1}"
-        holder.imagePoke.load("https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/shiny/${position+1}.png")
-
+        if(idPoke != null) {
+            holder.namePoke.text = poke.name
+            holder.numberPoke.text = idPoke.toString()
+            holder.imagePoke.load("https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/shiny/$idPoke.png")
+        } else{
+            holder.namePoke.text = poke.name
+            holder.numberPoke.text = "#${position + 1}"
+            holder.imagePoke.load("https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/shiny/${position + 1}.png")
+        }
     }
-
     interface OnClickPokeListener {
-        fun pokeClick(position: Int)
+        fun pokeClick(position: Int, id: Int?)
     }
 
     inner class ListPokeAdapterViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView),
@@ -63,7 +75,7 @@ class MainAdapter(var listener: OnClickPokeListener) :
         override fun onClick(v: View?) {
             val position = adapterPosition
             if (RecyclerView.NO_POSITION != position)
-                listener.pokeClick(position)
+                listener.pokeClick(position, idPoke)
         }
     }
 }

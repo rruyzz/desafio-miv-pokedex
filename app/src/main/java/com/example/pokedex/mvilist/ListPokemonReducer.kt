@@ -14,6 +14,14 @@ object ListPokemonReducer {
                 stateType = StateType.ErrorList,
                 message = result.message
             )
+            is ListPokemonResults.SuccessSearchPokemon -> currentState.copy(
+                stateType = StateType.SuccessSearch,
+                successSearch = result.successSearch
+            )
+            is ListPokemonResults.ErrorSearchPokemon -> currentState.copy(
+                stateType = StateType.ErrorSearch,
+                message = result.message
+            )
         }
     }
 }
