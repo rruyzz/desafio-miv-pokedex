@@ -6,6 +6,16 @@
     android:layout_height="match_parent"
     tools:context=".ui.MainFragment">
 
+        <ImageView
+            android:id="@+id/image_view_error"
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/edit_text_search"
+            android:visibility="gone"
+            android:src="@drawable/ic_splash"/>
         <SearchView
             android:id="@+id/edit_text_search"
             android:layout_width="fill_parent"

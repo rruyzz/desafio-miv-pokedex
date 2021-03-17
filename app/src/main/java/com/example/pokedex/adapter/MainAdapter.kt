@@ -33,7 +33,7 @@ class MainAdapter(var listener: OnClickPokeListener) :
         list.addAll(lista)
         notifyDataSetChanged()
     }
-    fun clearListPoke(lista: ArrayList<PokemonResult>) {
+    fun clearListPoke() {
         list.clear()
         notifyDataSetChanged()
     }

@@ -9,6 +9,7 @@ import android.view.View
 import android.view.View.INVISIBLE
 import android.view.ViewGroup
 import android.widget.*
+import androidx.core.view.isGone
 import androidx.core.view.isVisible
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.GridLayoutManager
@@ -78,8 +79,10 @@ class MainFragment : ListPokemonMVIFragment(), MainAdapter.OnClickPokeListener {
         listapoke = response.results
         adapter.addListPoke(listapoke)
         idPoke = null
+        recycler_view.visibility = View.VISIBLE
         button_reload.visibility = View.INVISIBLE
         text_view_error.visibility = View.INVISIBLE
+        image_view_error.visibility = View.GONE
         hideLoanding()
     }
 
@@ -89,23 +92,27 @@ class MainFragment : ListPokemonMVIFragment(), MainAdapter.OnClickPokeListener {
         val resultList : ArrayList<PokemonResult> = arrayListOf(result)
         idPoke = response.id
         adapter.addSearchPoke(resultList, idPoke!!)
+        recycler_view.visibility = View.VISIBLE
         button_reload.visibility = View.INVISIBLE
         text_view_error.visibility = View.INVISIBLE
+        image_view_error.visibility = View.GONE
         hideLoanding()
     }
 
     private fun renderErrorSearchState(){
         "pokemon nao encontrado".toast()
         hideLoanding()
-        text_view_error.visibility = View.VISIBLE
-        button_reload.visibility = View.VISIBLE
+        recycler_view.visibility = View.GONE
+        image_view_error.visibility = View.VISIBLE
     }
 
     private fun searchPoke(){
         edit_text_search.setOnQueryTextListener( object : SearchView.OnQueryTextListener{
             override fun onQueryTextChange(newText: String?): Boolean {
                 if(newText == ""){
-//                    loadData(offset)
+                    offset = 0
+                    adapter.clearListPoke()
+                    loadData(offset)
                 }
                 return false
             }
