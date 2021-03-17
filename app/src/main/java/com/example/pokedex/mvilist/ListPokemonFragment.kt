@@ -1,39 +1,25 @@
-package com.example.pokedex.ui
+package com.example.pokedex.mvilist
 
-import android.content.Context
 import android.os.Bundle
-import android.os.Handler
 import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.View.INVISIBLE
 import android.view.ViewGroup
 import android.widget.*
-import androidx.core.view.isGone
-import androidx.core.view.isVisible
 import androidx.navigation.fragment.findNavController
-import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.example.mvi.UiStateMachine
 import com.example.pokedex.R
 import com.example.pokedex.adapter.MainAdapter
-import com.example.pokedex.model.Pokemon
-import com.example.pokedex.model.PokemonResponse
+import com.example.pokedex.detailpoke.DetailPokeFragmentDirections
 import com.example.pokedex.model.PokemonResult
-import com.example.pokedex.mvilist.*
-import com.google.gson.Gson
-import com.google.gson.JsonParser
-import com.google.gson.reflect.TypeToken
-import kotlinx.android.synthetic.main.fragment_detail_poke.*
 import kotlinx.android.synthetic.main.fragment_main.*
-import okhttp3.internal.notifyAll
-import org.json.JSONArray
 import org.koin.androidx.viewmodel.ext.android.viewModel
-import java.lang.reflect.Array.get
 
 
-class MainFragment : ListPokemonMVIFragment(), MainAdapter.OnClickPokeListener {
+class ListPokemonFragment : ListPokemonMVIFragment(), MainAdapter.OnClickPokeListener {
     override val uiStateMachine: UiStateMachine<ListPokemonState> get() = viewModel
     private val viewModel: ListPokemonViewModel by viewModel()
     private var adapter: MainAdapter = MainAdapter(this)
@@ -49,7 +35,7 @@ class MainFragment : ListPokemonMVIFragment(), MainAdapter.OnClickPokeListener {
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        offset= 0
+        offset = 0
         loadData(0)
         // Inflate the layout for this fragment
         return inflater.inflate(R.layout.fragment_main, container, false)
@@ -86,10 +72,10 @@ class MainFragment : ListPokemonMVIFragment(), MainAdapter.OnClickPokeListener {
         hideLoanding()
     }
 
-    private fun renderSuccesSearch(state: ListPokemonState){
+    private fun renderSuccesSearch(state: ListPokemonState) {
         val response = state.successSearch!!
         val result = PokemonResult(response.name, "url")
-        val resultList : ArrayList<PokemonResult> = arrayListOf(result)
+        val resultList: ArrayList<PokemonResult> = arrayListOf(result)
         idPoke = response.id
         adapter.addSearchPoke(resultList, idPoke!!)
         recycler_view.visibility = View.VISIBLE
@@ -99,23 +85,24 @@ class MainFragment : ListPokemonMVIFragment(), MainAdapter.OnClickPokeListener {
         hideLoanding()
     }
 
-    private fun renderErrorSearchState(){
+    private fun renderErrorSearchState() {
         "pokemon nao encontrado".toast()
         hideLoanding()
         recycler_view.visibility = View.GONE
         image_view_error.visibility = View.VISIBLE
     }
 
-    private fun searchPoke(){
-        edit_text_search.setOnQueryTextListener( object : SearchView.OnQueryTextListener{
+    private fun searchPoke() {
+        edit_text_search.setOnQueryTextListener(object : SearchView.OnQueryTextListener {
             override fun onQueryTextChange(newText: String?): Boolean {
-                if(newText == ""){
+                if (newText == "") {
                     offset = 0
-                    adapter.clearListPoke()
+                    adapter.clearListPoke(null)
                     loadData(offset)
                 }
                 return false
             }
+
             override fun onQueryTextSubmit(query: String?): Boolean {
                 viewModel.mutate(
                     ListPokemonActions.SearchPokemonRequestAction(query!!)
@@ -140,11 +127,13 @@ class MainFragment : ListPokemonMVIFragment(), MainAdapter.OnClickPokeListener {
     }
 
     override fun pokeClick(position: Int, idPoke: Int?) {
-        if(idPoke != null) {
-            val actionid = MainFragmentDirections.actionMainFragmentToDetailPokeFragment(idPoke-1)
+        if (idPoke != null) {
+            val actionid =
+                ListPokemonFragmentDirections.actionMainFragmentToDetailPokeFragment(idPoke - 1)
             findNavController().navigate(actionid)
         } else {
-            val actionPostion = MainFragmentDirections.actionMainFragmentToDetailPokeFragment(position)
+            val actionPostion =
+                ListPokemonFragmentDirections.actionMainFragmentToDetailPokeFragment(position)
             findNavController().navigate(actionPostion)
         }
     }
@@ -173,15 +162,17 @@ class MainFragment : ListPokemonMVIFragment(), MainAdapter.OnClickPokeListener {
             loadData(0)
         }
     }
+
     private fun Any.toast(duration: Int = Toast.LENGTH_LONG): Toast {
         return Toast.makeText(context, this.toString(), duration).apply { show() }
     }
+
     private fun setRecyclerViewScrollListener() {
         scrollListener = object : RecyclerView.OnScrollListener() {
             override fun onScrollStateChanged(recyclerView: RecyclerView, newState: Int) {
                 super.onScrollStateChanged(recycler_view, newState)
                 val totalItemCount = recyclerView!!.layoutManager?.itemCount
-                if (totalItemCount == lastVisibleItemPosition +1) {
+                if (totalItemCount == lastVisibleItemPosition + 1) {
                     offset += 20
                     loadData(offset)
                     Log.d("HTTPS", "$offset")
@@ -190,5 +181,10 @@ class MainFragment : ListPokemonMVIFragment(), MainAdapter.OnClickPokeListener {
             }
         }
         recycler_view.addOnScrollListener(scrollListener)
+
+//        edit_text_search.isIconified =false
+//        edit_text_search.setOnClickListener(View.OnClickListener {
+//            edit_text_search.isIconified(false)
+//        })
     }
 }

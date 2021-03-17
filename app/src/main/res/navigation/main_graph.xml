@@ -16,7 +16,7 @@
     </fragment>
     <fragment
         android:id="@+id/mainFragment"
-        android:name="com.example.pokedex.ui.MainFragment"
+        android:name="com.example.pokedex.mvilist.ListPokemonFragment"
         android:label="fragment_main"
         tools:layout="@layout/fragment_main" >
         <action

@@ -4,7 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".ui.MainFragment">
+    tools:context=".mvilist.ListPokemonFragment">
 
         <ImageView
             android:id="@+id/image_view_error"
@@ -22,6 +22,7 @@
             android:layout_height="wrap_content"
             android:background="@drawable/custom_search"
             android:imeOptions="actionSearch"
+            android:iconifiedByDefault="false"
             android:hint="Buscar"
             app:layout_constraintTop_toTopOf="parent"
             app:layout_constraintEnd_toEndOf="parent"

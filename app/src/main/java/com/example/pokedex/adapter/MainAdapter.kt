@@ -33,7 +33,8 @@ class MainAdapter(var listener: OnClickPokeListener) :
         list.addAll(lista)
         notifyDataSetChanged()
     }
-    fun clearListPoke() {
+    fun clearListPoke(id: Int?) {
+        idPoke = id
         list.clear()
         notifyDataSetChanged()
     }
@@ -50,7 +51,7 @@ class MainAdapter(var listener: OnClickPokeListener) :
         val poke = list[position]
         if(idPoke != null) {
             holder.namePoke.text = poke.name
-            holder.numberPoke.text = idPoke.toString()
+            holder.numberPoke.text = "#"+idPoke.toString()
             holder.imagePoke.load("https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/shiny/$idPoke.png")
         } else{
             holder.namePoke.text = poke.name
