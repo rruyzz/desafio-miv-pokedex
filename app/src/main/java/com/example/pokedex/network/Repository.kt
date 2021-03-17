@@ -20,4 +20,8 @@ class Repository(private val service: Service) {
     suspend fun getPokemonSpecieService(id: String) : Response<PokemonSpecies>{
         return service.getPokemonSpecieService(id)
     }
+
+    suspend fun getListPokemonAbility(limit: Int, offset: Int) : Response<PokemonResponse>{
+        return service.getListPokemonAbility(limit, offset)
+    }
 }

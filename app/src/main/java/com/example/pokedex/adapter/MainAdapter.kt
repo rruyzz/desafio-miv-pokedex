@@ -16,7 +16,6 @@ class MainAdapter(var listener: OnClickPokeListener) :
     RecyclerView.Adapter<MainAdapter.ListPokeAdapterViewHolder>() {
 
     var list = arrayListOf<PokemonResult>()
-    lateinit var pokemon: Pokemon
     var idPoke: Int? = null
 
     override fun onCreateViewHolder(

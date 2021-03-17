@@ -1,5 +1,7 @@
 package com.example.pokedex.di
 
+import com.example.pokedex.abilitylist.AbilityListDispatcher
+import com.example.pokedex.abilitylist.AbilityListViewModel
 import com.example.pokedex.detailpoke.DetailPokeDispatcher
 import com.example.pokedex.detailpoke.DetailPokemonViewModel
 import com.example.pokedex.mvilist.ListPokemonDispatcher
@@ -22,6 +24,9 @@ val module = module{
 
     factory { DetailPokeDispatcher(get()) }
     viewModel { DetailPokemonViewModel(get()) }
+
+    factory{ AbilityListDispatcher (get())}
+    viewModel { AbilityListViewModel (get()) }
 }
 
 

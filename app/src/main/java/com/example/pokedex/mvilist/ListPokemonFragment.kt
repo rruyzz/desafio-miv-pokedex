@@ -44,9 +44,11 @@ class ListPokemonFragment : ListPokemonMVIFragment(), MainAdapter.OnClickPokeLis
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         setRecyclerViewScrollListener()
-        putAdapter()
         searchPoke()
         reload()
+//        if(listapoke.size == 0){
+            putAdapter()
+//        }
     }
 
     override fun render(state: ListPokemonState) {

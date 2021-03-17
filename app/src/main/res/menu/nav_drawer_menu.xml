@@ -2,11 +2,11 @@
 <menu xmlns:android="http://schemas.android.com/apk/res/android">
 
     <item
-        android:id="@+id/item1"
+        android:id="@+id/item_pokedex"
         android:title="@string/app_name"/>
     <item
-        android:id="@+id/item2"
-        android:title="2"/>
+        android:id="@+id/item_abilyt"
+        android:title="ability"/>
     <item
         android:id="@+id/item3"
         android:title="3"/>

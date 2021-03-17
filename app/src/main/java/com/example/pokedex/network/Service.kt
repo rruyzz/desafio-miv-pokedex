@@ -21,11 +21,17 @@ interface Service {
         @Query("offset") offset: Int?
     ): Response<PokemonResponse>
 
+    @GET("ability")
+    suspend fun getListPokemonAbility(
+        @Query("limit") limit: Int?,
+        @Query("offset") offset: Int?
+    ): Response<PokemonResponse>
+
     @GET("pokemon/{id}")
-    suspend fun getPokemonService(@Path("id") id:String) : Response<Pokemon>
+    suspend fun getPokemonService(@Path("id") id: String): Response<Pokemon>
 
     @GET("pokemon-species/{id}")
-    suspend fun getPokemonSpecieService(@Path("id") id:String) : Response<PokemonSpecies>
+    suspend fun getPokemonSpecieService(@Path("id") id: String): Response<PokemonSpecies>
 }
 
 val logger = HttpLoggingInterceptor().setLevel(HttpLoggingInterceptor.Level.BODY)
